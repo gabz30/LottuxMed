@@ -1,0 +1,2 @@
+[25-Oct-2021 18:12:39 America/New_York] PHP Warning:  require(/home/cktlictn/public_html/../lottuxmed/vendor/autoload.php): failed to open stream: No such file or directory in /home/cktlictn/public_html/index.php on line 34
+[25-Oct-2021 18:12:39 America/New_York] PHP Fatal error:  require(): Failed opening required '/home/cktlictn/public_html/../lottuxmed/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/cktlictn/public_html/index.php on line 34
