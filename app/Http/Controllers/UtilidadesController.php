@@ -11,7 +11,7 @@ use App\Models\medicamentos;
 use App\Models\recetas;
 use App\Models\archivos;
 use App\Models\User;
-
+use Illuminate\Support\Facades\DB;
 
 class UtilidadesController extends Controller
 {
@@ -86,5 +86,14 @@ class UtilidadesController extends Controller
         // $imageName = $image->getClientOriginalName();
         // $image->move(storage_path('images'), $imageName);
 
+    }
+
+    public function ocupaciones()
+    {
+        return DB::table('ocupacion')->orderBy('nombre', 'asc')->get();
+    }
+    public function gruposSanguineos()
+    {
+        return DB::table('grupo_sanguineos')->orderBy('id', 'asc')->get();
     }
 }

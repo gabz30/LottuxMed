@@ -76,11 +76,12 @@
                     class="form-control"
                     v-model="formulario.ocupacion_id"
                 >
-                    <option value="1">Estudiante</option>
+                <option v-for="item in dataOcupacion" :key="item.id" :value="item.id">{{ item.nombre }}</option>
+                    <!-- <option value="1">Estudiante</option>
                     <option value="2">Empleado</option>
                     <option value="3">Desempleado</option>
                     <option value="4">Comerciante</option>
-                    <option value="5">Otros</option>
+                    <option value="5">Otros</option> -->
                 </select>
             </div>
 
@@ -92,12 +93,12 @@
                     class="form-control"
                     v-model="formulario.estado_civil_id"
                 >
-                    <option value="1">Solter0</option>
-                    <option value="2">Comprometido</option>
-                    <option value="3">Casado</option>
+                    <option value="1">Soltero/a</option>
+                    <option value="2">Comprometido/a</option>
+                    <option value="3">Casado/a</option>
                     <option value="4">Union Libre</option>
-                    <option value="5">Divorciado</option>
-                    <option value="6">Viudo</option>
+                    <option value="5">Divorciado/a</option>
+                    <option value="6">Viudo/a</option>
                 </select>
             </div>
             <div class="form-group col-md-3">
@@ -124,14 +125,15 @@
                         class="form-control"
                         v-model="formulario.grupo_sanguineo_id"
                     >
-                        <option value="1">A +</option>
+                    <option v-for="item in dataGrupoSanguineo" :key="item.id" :value="item.id">{{ item.nombre }}</option>
+                        <!-- <option value="1">A +</option>
                         <option value="2">B +</option>
                         <option value="3">O +</option>
                         <option value="4">AB +</option>
                         <option value="5">A -</option>
                         <option value="6">B -</option>
                         <option value="7">O -</option>
-                        <option value="8">AB -</option>
+                        <option value="8">AB -</option> -->
                     </select>
                 </div>
 
@@ -145,7 +147,7 @@
                 </div>
 
                 <div class="form-group col-md-5 my-3">
-                    <label for="">Imagen</label>
+                    <!-- <label for="">Imagen</label>
                     <div class="custom-file">
                         <input
                             type="file"
@@ -158,7 +160,7 @@
                             for="validatedCustomFile"
                             >Elije una imagen</label
                         >
-                    </div>
+                    </div> -->
                 </div>
                 <div class="form-group col-md-3 my-3">
                     <label for="">Es familiar de un Doctor?</label>
@@ -232,7 +234,7 @@ export default {
     props: ["user_login"],
     mounted() {
         this.formulario.authLogin = this.user_login;
-       
+        this.cargarRecursos();
     },
     data() {
         return {
@@ -258,10 +260,28 @@ export default {
                 estatus: 1,
                 authLogin: 0
             },
-            user_id: 0
+            user_id: 0,
+            dataOcupacion: [],
+            dataGrupoSanguineo: [],
         };
     },
     methods: {
+        async cargarRecursos() {
+            await axios
+                .get("/ocupaciones")
+                .then(res => {
+                    // console.log(res.data);
+                    this.dataOcupacion = res.data;
+                })
+                .catch(err => console.log(err));
+            await axios
+                .get("/grupos-sanguineos")
+                .then(response => {
+                    // console.log(res.data);
+                    this.dataGrupoSanguineo = response.data;
+                })
+                .catch(err => console.log(err));
+        },
         async guardar() {
             await axios
                 .post("/pacientes", this.formulario)

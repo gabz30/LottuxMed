@@ -125,6 +125,8 @@ Route::get('/lista-medicamentos', [UtilidadesController::class, 'listaMedicament
 Route::post('/recetas', [UtilidadesController::class, 'saveRecetas']);
 Route::post('/archivos', [UtilidadesController::class, 'guardarArchivo'])->name('subir-archivo');
 Route::get('/secretarias', [UtilidadesController::class, 'listaSecretarias']);
+Route::get('/ocupaciones', [UtilidadesController::class, 'ocupaciones']);
+Route::get('/grupos-sanguineos', [UtilidadesController::class, 'gruposSanguineos']);
 
 
 // </Calendario>
