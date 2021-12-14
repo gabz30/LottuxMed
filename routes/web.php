@@ -23,6 +23,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Exports\UsersExport;
 use App\Http\Controllers\CitasPendientesController;
+use App\Http\Controllers\doctorController;
 use App\Http\Controllers\extraConsultasController;
 use App\Http\Controllers\FarmaciasController;
 use App\Http\Controllers\ListaEsperaController;
@@ -68,11 +69,11 @@ Route::get('/admin/clinicas/get', [HomeController::class, 'clinicasGET']);
 Route::post('/admin/clinicas/show/{id}', [HomeController::class, 'clinicasShow']);
 Route::post('/admin/clinicas', [HomeController::class, 'clinicasPOST']);
 
-Route::get('/admin/doctor', function(){
+Route::get('/admin/doctor', function () {
     return view('admin.doctor');
 })->name('admin.doctor.registrar');
 
-Route::get('/admin/doctor/lista', function(){
+Route::get('/admin/doctor/lista', function () {
     return view('admin.listaDoctor');
 })->name('admin.doctor.lista');
 
@@ -80,11 +81,12 @@ Route::post('/admin/registrar/doctor', [HomeController::class, 'registrarDoctor'
 Route::get('/admin/lista/doctor', [HomeController::class, 'listaDoctores']);
 Route::post('/admin/lista/doctor', [HomeController::class, 'listaDoctoresParametros']);
 
+Route::get('/doctor-documentos', [doctorController::class, 'doctorDocumentos'])->name('doctor.documentos');
 
 Route::post('/admin/reportes/medicamentos', [HomeController::class, 'reportesMedicamentos']);
 Route::post('/admin/reportes/consultas', [HomeController::class, 'reportesConsultas']);
 
-Route::get('/lottuxpharm', function(){
+Route::get('/lottuxpharm', function () {
     return view('LottuxPharm.index');
 })->name('LottuxMed');
 Route::post('/lottuxpharm', [pedidosfarmaciaController::class, 'store']);
@@ -113,8 +115,8 @@ Route::get('/consulta/recetas/{id}', [ConsultasController::class, 'showRecetas']
 Route::resource('/consultas', ConsultasController::class);
 Route::get('/consulta/{id}', [ConsultasController::class, 'mostrar']);
 Route::post('/consultas/reporte', [ConsultasController::class, 'consultas'])->name('reportes.consultas');
-Route::get('/busqueda/farmacias', function(){
-return view('consultas.farmacias');
+Route::get('/busqueda/farmacias', function () {
+    return view('consultas.farmacias');
 });
 
 Route::get('/enfermedades', [UtilidadesController::class, 'allEnfermedades']);
@@ -134,12 +136,12 @@ Route::resource('/calendarios', CalendarioController::class);
 Route::get('/calendario', [CalendarioController::class, 'vista'])->name('calendario.vista');
 Route::delete('/calendario/{id}', [CalendarioController::class, 'destroy']);
 
-Route::get('/citas-pendientes/', function(){
+Route::get('/citas-pendientes/', function () {
     return view('calendario.pendientes');
 })->name('citas.pendientes');
 
-Route::get('/citas-pendientes/index', [CitasPendientesController::class ,'index']);
-Route::put('/citas-pendientes/{id}', [CitasPendientesController::class ,'update']);
+Route::get('/citas-pendientes/index', [CitasPendientesController::class, 'index']);
+Route::put('/citas-pendientes/{id}', [CitasPendientesController::class, 'update']);
 // <Contabilidad>
 
 // Pago de consulta
@@ -191,8 +193,8 @@ Route::PUT('/configuracion/estudios/{id}', [ConfiguracionController::class, 'est
 
 //Extra consultas
 
-Route::post('/extra-consultas', [extraConsultasController::class ,'store']);
-Route::get('/extra-consultas/{id}', [extraConsultasController::class ,'show']);
+Route::post('/extra-consultas', [extraConsultasController::class, 'store']);
+Route::get('/extra-consultas/{id}', [extraConsultasController::class, 'show']);
 
 // Reportes
 Route::get('/reportes', [ReportesController::class, 'index'])->name('reportes.index');
@@ -223,7 +225,7 @@ Route::PUT('/contabilidad/pago/{id}', [ContabilidadController::class, 'actualiza
 //     $pdf =  PDF::loadView('Reportes.todos');
 
 //     return $pdf->stream();
-    
+
 // })->name('pdf');
 
 
@@ -260,7 +262,7 @@ Route::get('/graficas', function () {
 
     $consultasNormales = App\Models\Consultas::where('created_at', '>=', $now->year)
         ->where('drID', '=', $user_id)
-        ->where('tipo_consulta_id','=', 1)
+        ->where('tipo_consulta_id', '=', 1)
         ->groupBy('date')
         ->orderBy('date', 'ASC')
         ->get(array(
@@ -279,7 +281,7 @@ Route::get('/graficas', function () {
 
     $consultasEmergencia = App\Models\Consultas::where('created_at', '>=', $now->year)
         ->where('drID', '=', $user_id)
-        ->where('tipo_consulta_id','=', 2)
+        ->where('tipo_consulta_id', '=', 2)
         ->groupBy('date')
         ->orderBy('date', 'ASC')
         ->get(array(
@@ -299,7 +301,7 @@ Route::get('/graficas', function () {
 
     $consultasInternamiento = App\Models\Consultas::where('created_at', '>=', $now->year)
         ->where('drID', '=', $user_id)
-        ->where('tipo_consulta_id','=', 3)
+        ->where('tipo_consulta_id', '=', 3)
         ->groupBy('date')
         ->orderBy('date', 'ASC')
         ->get(array(
@@ -318,7 +320,7 @@ Route::get('/graficas', function () {
 
     $consultasUci = App\Models\Consultas::where('created_at', '>=', $now->year)
         ->where('drID', '=', $user_id)
-        ->where('tipo_consulta_id','=', 4)
+        ->where('tipo_consulta_id', '=', 4)
         ->groupBy('date')
         ->orderBy('date', 'ASC')
         ->get(array(
@@ -335,7 +337,7 @@ Route::get('/graficas', function () {
         $vies4 += $item->views;
     }
 
-   
+
     $sql = "SELECT SUM(p.total_pago) as total_pago,SUM(p.monto_seguro) as monto_seguro, DATE_FORMAT(p.created_at,'%b - %Y') as date, COUNT(*) as 'views'
                             from pagos p
                             inner join consultas c on (p.consulta_id = c.id)
@@ -388,13 +390,13 @@ Route::get('/graficas', function () {
     //     ->setMarkers(['#FFA41B', '#4F46E5'], 7, 10)
     //     ->setXAxis($dateConsultasNormales);
 
-    
+
 
     $consultasRealizadas = (new LarapexChart)->donutChart()
-    ->setTitle('Consultas realizadas')
-    ->setSubtitle('2021.')
-    ->addData([$vies1, $vies2, $vies3, $vies4])
-    ->setLabels(['Consulta', 'Emergencia', 'Internamiento', 'Uci']);
+        ->setTitle('Consultas realizadas')
+        ->setSubtitle('2021.')
+        ->addData([$vies1, $vies2, $vies3, $vies4])
+        ->setLabels(['Consulta', 'Emergencia', 'Internamiento', 'Uci']);
 
     $chartPagos = (new LarapexChart)->barChart()
         ->setTitle('Efectivo vs Aseguradora.')
@@ -405,7 +407,7 @@ Route::get('/graficas', function () {
 
     $gastos = (new LarapexChart)->horizontalBarChart()
         ->setTitle('Gastos')
-        ->setSubtitle('Gastos del '.$now->year)
+        ->setSubtitle('Gastos del ' . $now->year)
         ->setColors(['#D32F2F', '#D32F2F'])
         ->addData('Gastos', $total_Gastos)
         ->setXAxis($dateGastos);
