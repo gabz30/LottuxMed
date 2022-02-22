@@ -14,8 +14,8 @@ class ConsultasController extends Controller
      */
     public function index()
     {
-        $drID = auth()->user()->authLogin;
-        $DRid = auth()->user()->id;
+        $drID = auth()->User()->authLogin;
+        $DRid = auth()->User()->id;
 
         // $consultas = Consultas::with('Paciente:id,name,sexo','estudiosRealizados')
         // ->where('drID','=', $drID)

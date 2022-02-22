@@ -19,7 +19,7 @@
                         
                         <div class="card-body font-weight-bold shadow p-3">
 
-                            <h3><span class="badge badge-success text-dark">{{ $item->paciente->name }}</span> - <span class="badge badge-danger shadow">{{ $item->created_at->diffForHumans() }}</span></h3>
+                            <h3><span class="badge badge-success text-dark">{{ $item->Paciente->name }}</span> - <span class="badge badge-danger shadow">{{ $item->created_at->diffForHumans() }}</span></h3>
 
                             <p class="card-text"><textarea class="form-control" rows="3" disabled>{{ $item->comentario }}</textarea></p>
                             
