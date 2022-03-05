@@ -111,13 +111,15 @@
                 <div class="tab-pane fade" id="nav-archivos" role="tabpanel" aria-labelledby="nav-archivos-tab">
 
 
-
-
+{{-- 
+                    {"id":\/storage\/archivos\/1dazdXmpe5YtGP8yo5uqVCOAT6UQrbGUSMtNg75h.png","consulta_id78,"url":"":null,"paciente_id":14,"user_id":18,"created_at":"2022-02-23T04:44:26.000000Z","updated_at":"2022-02-23T04:44:26.000000Z"} --}}
 
                    <ul class="row list-unstyled mt-4">
                         @foreach($files as $item)
+                        <h1>{{ asset($item->url) }}</h1>
                         <div class="px-2 py-2">
                             <a href="{{ asset($item->url)}}" class="fancybox" data-fancybox="gallery">
+                                
                                 <li class="col-md-12 mb-2">
                                     <img 
                                     class="img-fluid"
